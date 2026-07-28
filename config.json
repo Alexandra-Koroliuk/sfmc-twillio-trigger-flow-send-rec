@@ -1,13 +1,13 @@
 {
   "workflowApiVersion": "1.1",
   "metaData": {
-    "icon": "https://img.icons8.com/color/48/000000/twilio.png",
+    "icon": "public/images/iconSmall.png",
     "category": "message"
   },
   "type": "REST",
   "lang": {
     "en-US": {
-      "name": "Twilio Flow Trigger (Render)",
+      "name": "Twilio Flow Trigger",
       "description": "Trigger a Twilio Studio Flow using dynamically mapped Journey data."
     }
   },
