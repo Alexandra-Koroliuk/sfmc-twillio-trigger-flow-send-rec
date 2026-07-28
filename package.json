@@ -1,0 +1,15 @@
+{
+  "name": "twilio-flow-custom-activity",
+  "version": "1.0.0",
+  "description": "SFMC Custom Activity for Twilio Flows on Render",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "jsonwebtoken": "^9.0.0",
+    "twilio": "^4.0.0"
+  }
+}
