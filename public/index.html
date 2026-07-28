@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Configure Twilio Flow Activity</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/design-system/2.17.5/styles/salesforce-lightning-design-system.min.css" />
+    <style>
+        body { padding: 20px; background-color: #f3f2f1; }
+        .container { background: #fff; padding: 25px; border-radius: 4px; box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="slds-text-heading_medium slds-m-bottom_medium">Configure Twilio Studio Flow Trigger</h2>
+        
+        <div class="slds-form-element slds-m-bottom_medium">
+            <label class="slds-form-element__label" for="flowSid">
+                <abbr class="slds-required" title="required">* </abbr>Twilio Flow SID
+            </label>
+            <div class="slds-form-element__control">
+                <input type="text" id="flowSid" class="slds-input" placeholder="FWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required />
+            </div>
+        </div>
+
+        <div class="slds-form-element slds-m-bottom_medium">
+            <label class="slds-form-element__label" for="twilioFrom">
+                <abbr class="slds-required" title="required">* </abbr>Twilio Sender (Phone Number or Messaging Service SID)
+            </label>
+            <div class="slds-form-element__control">
+                <input type="text" id="twilioFrom" class="slds-input" placeholder="+1234567890 or MGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required />
+            </div>
+        </div>
+
+        <div class="slds-form-element slds-m-bottom_medium">
+            <label class="slds-form-element__label" for="phoneNumberField">
+                <abbr class="slds-required" title="required">* </abbr>Recipient Phone Number (SFMC Merge Tag)
+            </label>
+            <div class="slds-form-element__control">
+                <input type="text" id="phoneNumberField" class="slds-input" placeholder="{{Contact.Attribute.Subscriber.Phone}}" value="{{Contact.Attribute.Subscriber.Phone}}" required />
+                <div class="slds-form-element__help">Provide the database attribute representing the destination phone number.</div>
+            </div>
+        </div>
+
+        <div class="slds-form-element slds-m-bottom_medium">
+            <label class="slds-form-element__label" for="customParams">
+                Flow Context Parameters (JSON format)
+            </label>
+            <div class="slds-form-element__control">
+                <textarea id="customParams" class="slds-textarea" rows="4" placeholder='{\n  "firstName": "{{Contact.Attribute.Subscriber.FirstName}}",\n  "orderId": "{{Event.DE-ExternalKey-Generated-By-Journey.OrderId}}"\n}'></textarea>
+                <div class="slds-form-element__help">Pass dynamic data to your Twilio Flow. You can map journey parameters using SFMC merge tags.</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/postmonger.js"></script>
+    <script src="js/customActivity.js"></script>
+</body>
+</html>
