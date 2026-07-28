@@ -15,7 +15,7 @@
     "execute": {
       "inArguments": [],
       "outArguments": [],
-      "url": "https://your-app-name.onrender.com/execute",
+      "url": "https://sfmc-twillio-trigger-flow-send-rec.onrender.com/execute",
       "verb": "POST",
       "body": "",
       "header": "",
@@ -28,17 +28,17 @@
   "configurationArguments": {
     "applicationExtensionId": "your-installed-package-component-id",
     "save": {
-      "url": "https://your-app-name.onrender.com/save",
+      "url": "https://sfmc-twillio-trigger-flow-send-rec.onrender.com/save",
       "verb": "POST",
       "useJwt": true
     },
     "publish": {
-      "url": "https://your-app-name.onrender.com/publish",
+      "url": "https://sfmc-twillio-trigger-flow-send-rec.onrender.com/publish",
       "verb": "POST",
       "useJwt": true
     },
     "validate": {
-      "url": "https://your-app-name.onrender.com/validate",
+      "url": "https://sfmc-twillio-trigger-flow-send-rec.onrender.com/validate",
       "verb": "POST",
       "useJwt": true
     }
