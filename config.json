@@ -1,0 +1,64 @@
+{
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "https://img.icons8.com/color/48/000000/twilio.png",
+    "category": "message"
+  },
+  "type": "REST",
+  "lang": {
+    "en-US": {
+      "name": "Twilio Flow Trigger (Render)",
+      "description": "Trigger a Twilio Studio Flow using dynamically mapped Journey data."
+    }
+  },
+  "arguments": {
+    "execute": {
+      "inArguments": [],
+      "outArguments": [],
+      "url": "https://your-app-name.onrender.com/execute",
+      "verb": "POST",
+      "body": "",
+      "header": "",
+      "format": "json",
+      "useResponse": false,
+      "timeout": 10000,
+      "useJwt": true
+    }
+  },
+  "configurationArguments": {
+    "applicationExtensionId": "your-installed-package-component-id",
+    "save": {
+      "url": "https://your-app-name.onrender.com/save",
+      "verb": "POST",
+      "useJwt": true
+    },
+    "publish": {
+      "url": "https://your-app-name.onrender.com/publish",
+      "verb": "POST",
+      "useJwt": true
+    },
+    "validate": {
+      "url": "https://your-app-name.onrender.com/validate",
+      "verb": "POST",
+      "useJwt": true
+    }
+  },
+  "wizardSteps": [
+    { "label": "Configure Twilio Flow", "key": "step1" }
+  ],
+  "userInterfaces": {
+    "configModal": {
+      "height": 550,
+      "width": 800,
+      "fullscreen": false
+    }
+  },
+  "schema": {
+    "arguments": {
+      "execute": {
+        "inArguments": [],
+        "outArguments": []
+      }
+    }
+  }
+}
