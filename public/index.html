@@ -2,56 +2,127 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Configure Twilio Flow Activity</title>
+    <title>Configure Twilio SMS Flow Trigger</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/design-system/2.17.5/styles/salesforce-lightning-design-system.min.css" />
     <style>
-        body { padding: 20px; background-color: #f3f2f1; }
-        .container { background: #fff; padding: 25px; border-radius: 4px; box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1); }
+        body { padding: 15px; background-color: #f3f2f1; font-family: 'Salesforce Sans', Arial, sans-serif; }
+        .app-container { background: #fff; border-radius: 4px; box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1); padding: 20px; }
+        .preview-box { background-color: #f3f2f1; border: 1px dashed #c9c7c5; border-radius: 4px; padding: 12px; font-family: Courier, monospace; font-size: 13px; color: #2b2826; white-space: pre-wrap; word-break: break-word; }
+        .text-muted { color: #747474; }
+        .badge-metric { font-size: 16px; font-weight: bold; color: #0176d3; }
+        .compliance-wrapper { background-color: #f3f2f1; padding: 6px 10px; border-radius: 4px; border-left: 3px solid #0176d3; font-size: 12px; color: #514f4d; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 class="slds-text-heading_medium slds-m-bottom_medium">Configure Twilio Studio Flow Trigger</h2>
-        
-        <div class="slds-form-element slds-m-bottom_medium">
-            <label class="slds-form-element__label" for="flowSid">
-                <abbr class="slds-required" title="required">* </abbr>Twilio Flow SID
-            </label>
-            <div class="slds-form-element__control">
-                <input type="text" id="flowSid" class="slds-input" placeholder="FWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required />
+    <div class="app-container">
+        <!-- Header -->
+        <div class="slds-media slds-no-space slds-grow slds-m-bottom_large">
+            <div class="slds-media__figure">
+                <span class="slds-icon_container slds-icon-standard-sms" title="SMS Activity">
+                    <img src="https://img.icons8.com/color/48/000000/twilio.png" style="width: 38px; height: 38px;" alt="Twilio" />
+                </span>
+            </div>
+            <div class="slds-media__body">
+                <p class="slds-text-title_caps slds-line-height_reset">Twilio Integrator</p>
+                <h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate" title="Twilio SMS Composer">Twilio Studio SMS Composer</h1>
             </div>
         </div>
 
-        <div class="slds-form-element slds-m-bottom_medium">
-            <label class="slds-form-element__label" for="twilioFrom">
-                <abbr class="slds-required" title="required">* </abbr>Twilio Sender (Phone Number or Messaging Service SID)
-            </label>
-            <div class="slds-form-element__control">
-                <input type="text" id="twilioFrom" class="slds-input" placeholder="+1234567890 or MGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required />
-            </div>
-        </div>
+        <div class="slds-grid slds-gutters">
+            <!-- Left Column: Settings -->
+            <div class="slds-col slds-size_2-of-5" style="border-right: 1px solid #e5e5e5; padding-right: 25px;">
+                <h3 class="slds-text-heading_small slds-m-bottom_medium">1. Connection & Routing</h3>
 
-        <div class="slds-form-element slds-m-bottom_medium">
-            <label class="slds-form-element__label" for="phoneNumberField">
-                <abbr class="slds-required" title="required">* </abbr>Recipient Phone Number (SFMC Merge Tag)
-            </label>
-            <div class="slds-form-element__control">
-                <input type="text" id="phoneNumberField" class="slds-input" placeholder="{{Contact.Attribute.Subscriber.Phone}}" value="{{Contact.Attribute.Subscriber.Phone}}" required />
-                <div class="slds-form-element__help">Provide the database attribute representing the destination phone number.</div>
-            </div>
-        </div>
+                <!-- Twilio Flow SID -->
+                <div class="slds-form-element slds-m-bottom_medium">
+                    <label class="slds-form-element__label" for="flowSid">
+                        <abbr class="slds-required" title="required">* </abbr>Twilio Flow SID (starts with FW)
+                    </label>
+                    <div class="slds-form-element__control">
+                        <input type="text" id="flowSid" class="slds-input" placeholder="FWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required />
+                    </div>
+                </div>
 
-        <div class="slds-form-element slds-m-bottom_medium">
-            <label class="slds-form-element__label" for="customParams">
-                Flow Context Parameters (JSON format)
-            </label>
-            <div class="slds-form-element__control">
-                <textarea id="customParams" class="slds-textarea" rows="4" placeholder='{\n  "firstName": "{{Contact.Attribute.Subscriber.FirstName}}",\n  "orderId": "{{Event.DE-ExternalKey-Generated-By-Journey.OrderId}}"\n}'></textarea>
-                <div class="slds-form-element__help">Pass dynamic data to your Twilio Flow. You can map journey parameters using SFMC merge tags.</div>
+                <!-- Twilio Sender -->
+                <div class="slds-form-element slds-m-bottom_medium">
+                    <label class="slds-form-element__label" for="twilioFrom">
+                        <abbr class="slds-required" title="required">* </abbr>Twilio Sender (Phone / Msg Service SID)
+                    </label>
+                    <div class="slds-form-element__control">
+                        <input type="text" id="twilioFrom" class="slds-input" placeholder="+18005550199 or MGxxx" required />
+                    </div>
+                </div>
+
+                <!-- Destination Phone Attribute -->
+                <div class="slds-form-element slds-m-bottom_medium">
+                    <label class="slds-form-element__label" for="phoneNumberField">
+                        <abbr class="slds-required" title="required">* </abbr>Recipient Phone Attribute (SFMC Merge Tag)
+                    </label>
+                    <div class="slds-form-element__control">
+                        <input type="text" id="phoneNumberField" class="slds-input" placeholder="{{Contact.Attribute.Subscriber.Phone}}" value="{{Contact.Attribute.Subscriber.Phone}}" required />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: SMS Message Composer -->
+            <div class="slds-col slds-size_3-of-5" style="padding-left: 25px;">
+                <h3 class="slds-text-heading_small slds-m-bottom_medium">2. SMS Message Builder</h3>
+
+                <div class="slds-form-element slds-m-bottom_small">
+                    <div class="slds-form-element__control">
+                        <!-- Prefix Header -->
+                        <div class="slds-m-bottom_xx-small">
+                            <span class="compliance-wrapper"><strong>Prefix:</strong> PSM Alert:</span>
+                        </div>
+
+                        <!-- User Input Textarea -->
+                        <textarea id="smsMessage" class="slds-textarea" rows="4" style="resize: none;" placeholder="Type your core alert message content here..."></textarea>
+                        
+                        <!-- Suffix Footer -->
+                        <div class="slds-m-top_xx-small">
+                            <span class="compliance-wrapper">
+                                <strong>Compliance Suffix:</strong> Reply HELP for help, STOP to end. Msg frq varies. Msg&Data Rates May Apply. Questions? Call us at 1-800-998-7715
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics Dashboard -->
+                <div class="slds-box slds-theme_shade slds-m-bottom_medium">
+                    <div class="slds-grid slds-grid_align-spread">
+                        <div class="slds-col slds-text-align_center">
+                            <p class="text-muted slds-text-title_caps">Your Text</p>
+                            <p class="badge-metric" id="userCharCount">0</p>
+                        </div>
+                        <div class="slds-col slds-text-align_center" style="border-left: 1px solid #d8dde6; border-right: 1px solid #d8dde6; padding: 0 20px;">
+                            <p class="text-muted slds-text-title_caps">Total Characters</p>
+                            <p class="badge-metric" id="totalCharCount">0 / 160</p>
+                        </div>
+                        <div class="slds-col slds-text-align_center">
+                            <p class="text-muted slds-text-title_caps">SMS Segments</p>
+                            <p class="badge-metric" id="smsSegments">1</p>
+                        </div>
+                    </div>
+                    <div class="slds-m-top_small slds-text-align_center">
+                        <span class="slds-text-body_small text-muted" id="alertWarning">
+                            Fits comfortably in 1 standard SMS.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Live Preview Block -->
+                <p class="slds-text-title_caps slds-m-bottom_xx-small text-muted">Outbound SMS Preview</p>
+                <div class="preview-box" id="previewText">PSM Alert: [Type your message above] Reply HELP for help, STOP to end. Msg frq varies. Msg&Data Rates May Apply. Questions? Call us at 1-800-998-7715</div>
+                <div class="slds-m-top_x-small">
+                    <p class="slds-text-body_small text-muted" style="line-height: 1.3;">
+                        💡 <strong>Note:</strong> Personalization tags like <code>{{Contact.Attribute.Name}}</code> are counted literally above, but will dynamically adjust to individual recipient name lengths at runtime.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="js/postmonger.js"></script>
     <script src="js/customActivity.js"></script>
