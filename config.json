@@ -7,8 +7,8 @@
   "type": "REST",
   "lang": {
     "en-US": {
-      "name": "Twilio Flow Trigger",
-      "description": "Trigger a Twilio Studio Flow using dynamically mapped Journey data."
+      "name": "Twilio SMS",
+      "description": "Setup SMS message to send it from Twillio mapped to Journey Data"
     }
   },
   "arguments": {
