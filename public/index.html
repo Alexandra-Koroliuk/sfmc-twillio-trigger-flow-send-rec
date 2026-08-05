@@ -7,29 +7,35 @@
     <style>
         body { padding: 15px; background-color: #f3f2f1; font-family: 'Salesforce Sans', Arial, sans-serif; }
         .app-container { background: #fff; border-radius: 4px; box-shadow: 0 2px 2px 0 rgba(0,0,0,0.1); padding: 20px; }
-        .preview-box { background-color: #f3f2f1; border: 1px dashed #c9c7c5; border-radius: 4px; padding: 12px; font-family: Courier, monospace; font-size: 13px; color: #2b2826; white-space: pre-wrap; word-break: break-word; }
+        .preview-box { background-color: #f3f2f1; border: 1px dashed #c9c7c5; border-radius: 4px; padding: 12px; font-family: Courier, monospace; font-size: 13px; color: #2b2826; white-space: pre-wrap; word-break: break-word; min-height: 70px; }
         .text-muted { color: #747474; }
         .badge-metric { font-size: 16px; font-weight: bold; color: #0176d3; }
-        .compliance-wrapper { background-color: #f3f2f1; padding: 6px 10px; border-radius: 4px; border-left: 3px solid #0176d3; font-size: 12px; color: #514f4d; }
+        .compliance-wrapper { background-color: #f3f2f1; padding: 6px 10px; border-radius: 4px; border-left: 3px solid #0176d3; font-size: 12px; color: #514f4d; display: block; }
+        .link-placeholder-tag { display: inline-block; background: #e8f4fd; border: 1px solid #0176d3; border-radius: 3px; padding: 1px 6px; font-size: 11px; font-weight: bold; color: #0176d3; font-family: monospace; }
+        .link-url-preview { background: #e8f4fd; border: 1px solid #d8edfa; border-radius: 4px; padding: 6px 10px; font-size: 11px; color: #0176d3; word-break: break-all; font-family: monospace; margin-top: 6px; display: none; }
+        .section-divider { border: none; border-top: 1px solid #e5e5e5; margin: 18px 0; }
+        .link-status-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; margin-left: 8px; }
+        .link-status-active { background: #cdf0d4; color: #1a6434; }
+        .link-status-missing { background: #fde0d0; color: #8e3e0e; }
     </style>
 </head>
 <body>
     <div class="app-container">
+
         <!-- Header -->
         <div class="slds-media slds-no-space slds-grow slds-m-bottom_large">
             <div class="slds-media__figure">
-                <span class="slds-icon_container slds-icon-standard-sms" title="SMS Activity">
-                    <img src="https://img.icons8.com/color/48/000000/twilio.png" style="width: 38px; height: 38px;" alt="Twilio" />
-                </span>
+                <img src="https://img.icons8.com/color/48/000000/twilio.png" style="width: 38px; height: 38px;" alt="Twilio" />
             </div>
             <div class="slds-media__body">
                 <p class="slds-text-title_caps slds-line-height_reset">Twilio Integrator</p>
-                <h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate" title="Twilio SMS Composer">Twilio Studio SMS Composer</h1>
+                <h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate">Twilio Studio SMS Composer</h1>
             </div>
         </div>
 
         <div class="slds-grid slds-gutters">
-            <!-- Left Column: Settings -->
+
+            <!-- ===================== LEFT COLUMN ===================== -->
             <div class="slds-col slds-size_2-of-5" style="border-right: 1px solid #e5e5e5; padding-right: 25px;">
                 <h3 class="slds-text-heading_small slds-m-bottom_medium">1. Connection & Routing</h3>
 
@@ -62,26 +68,88 @@
                         <input type="text" id="phoneNumberField" class="slds-input" placeholder="{{Contact.Attribute.Subscriber.Phone}}" value="{{Contact.Attribute.Subscriber.Phone}}" required />
                     </div>
                 </div>
+
+                <hr class="section-divider" />
+
+                <!-- ====== LINK SECTION ====== -->
+                <h3 class="slds-text-heading_small slds-m-bottom_x-small">
+                    2. Clickable Link
+                    <span id="linkStatusBadge" class="link-status-badge link-status-missing">Not Added</span>
+                </h3>
+
+                <p class="slds-text-body_small text-muted slds-m-bottom_small">
+                    Enter a URL and click <strong>Insert Link at Cursor</strong> to embed it anywhere inside your message body.
+                </p>
+
+                <!-- Link URL Input -->
+                <div class="slds-form-element slds-m-bottom_small">
+                    <label class="slds-form-element__label" for="linkUrl">
+                        Destination URL
+                    </label>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                        <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true" style="width:16px;height:16px;top:50%;transform:translateY(-50%);left:10px;position:absolute;">
+                            <use xlink:href="https://cdnjs.cloudflare.com/ajax/libs/design-system/2.17.5/icons/utility-sprite/svg/symbols.svg#link"></use>
+                        </svg>
+                        <input type="url" id="linkUrl" class="slds-input" style="padding-left:36px;" placeholder="https://yourwebsite.com/page" />
+                    </div>
+                </div>
+
+                <!-- Link Label (Optional) -->
+                <div class="slds-form-element slds-m-bottom_small">
+                    <label class="slds-form-element__label" for="linkLabel">
+                        Link Label <span class="text-muted">(optional - for your reference only)</span>
+                    </label>
+                    <div class="slds-form-element__control">
+                        <input type="text" id="linkLabel" class="slds-input" placeholder="e.g. View Your Alert Details" />
+                    </div>
+                </div>
+
+                <!-- Insert Button -->
+                <button id="insertLinkBtn" class="slds-button slds-button_brand slds-m-bottom_small" style="width: 100%;">
+                    &#128279; Insert Link at Cursor Position
+                </button>
+
+                <!-- Remove Link Button -->
+                <button id="removeLinkBtn" class="slds-button slds-button_destructive" style="width: 100%; display: none;">
+                    &#10006; Remove Link from Message
+                </button>
+
+                <!-- URL Live Echo -->
+                <div id="linkUrlPreview" class="link-url-preview"></div>
+
+                <!-- Tip Box -->
+                <div class="slds-m-top_small">
+                    <p class="slds-text-body_small text-muted">
+                        💡 <strong>Tip:</strong> Click inside your message text area first to place your cursor where you want the link to appear, then press <em>Insert Link at Cursor Position</em>.
+                    </p>
+                </div>
             </div>
 
-            <!-- Right Column: SMS Message Composer -->
+            <!-- ===================== RIGHT COLUMN ===================== -->
             <div class="slds-col slds-size_3-of-5" style="padding-left: 25px;">
-                <h3 class="slds-text-heading_small slds-m-bottom_medium">2. SMS Message Builder</h3>
+                <h3 class="slds-text-heading_small slds-m-bottom_medium">3. SMS Message Builder</h3>
 
                 <div class="slds-form-element slds-m-bottom_small">
                     <div class="slds-form-element__control">
-                        <!-- Prefix Header -->
+
+                        <!-- Prefix Banner -->
                         <div class="slds-m-bottom_xx-small">
-                            <span class="compliance-wrapper"><strong>Prefix:</strong> PSM Alert:</span>
+                            <span class="compliance-wrapper"><strong>Prefix (auto-added):</strong> PSM Alert:</span>
                         </div>
 
-                        <!-- User Input Textarea -->
-                        <textarea id="smsMessage" class="slds-textarea" rows="4" style="resize: none;" placeholder="Type your core alert message content here..."></textarea>
-                        
-                        <!-- Suffix Footer -->
+                        <!-- Core Message Textarea -->
+                        <textarea
+                            id="smsMessage"
+                            class="slds-textarea"
+                            rows="5"
+                            style="resize: none; font-family: Courier, monospace; font-size: 13px;"
+                            placeholder="Type your core alert message content here... Click 'Insert Link at Cursor' on the left to embed a link."
+                        ></textarea>
+
+                        <!-- Suffix Banner -->
                         <div class="slds-m-top_xx-small">
                             <span class="compliance-wrapper">
-                                <strong>Compliance Suffix:</strong> Reply HELP for help, STOP to end. Msg frq varies. Msg&Data Rates May Apply. Questions? Call us at 1-800-998-7715
+                                <strong>Compliance Suffix (auto-added):</strong> Reply HELP for help, STOP to end. Msg frq varies. Msg&amp;Data Rates May Apply. Questions? Call us at 1-800-998-7715
                             </span>
                         </div>
                     </div>
@@ -90,34 +158,55 @@
                 <!-- Metrics Dashboard -->
                 <div class="slds-box slds-theme_shade slds-m-bottom_medium">
                     <div class="slds-grid slds-grid_align-spread">
+
                         <div class="slds-col slds-text-align_center">
-                            <p class="text-muted slds-text-title_caps">Your Text</p>
+                            <p class="text-muted slds-text-title_caps" style="font-size:10px;">Your Text</p>
                             <p class="badge-metric" id="userCharCount">0</p>
+                            <p class="text-muted" style="font-size:10px;">chars</p>
                         </div>
-                        <div class="slds-col slds-text-align_center" style="border-left: 1px solid #d8dde6; border-right: 1px solid #d8dde6; padding: 0 20px;">
-                            <p class="text-muted slds-text-title_caps">Total Characters</p>
-                            <p class="badge-metric" id="totalCharCount">0 / 160</p>
+
+                        <div class="slds-col slds-text-align_center" style="border-left:1px solid #d8dde6; border-right:1px solid #d8dde6; padding: 0 12px;">
+                            <p class="text-muted slds-text-title_caps" style="font-size:10px;">Link Length</p>
+                            <p class="badge-metric" id="linkCharCount" style="color: #0176d3;">0</p>
+                            <p class="text-muted" style="font-size:10px;">chars</p>
                         </div>
+
+                        <div class="slds-col slds-text-align_center" style="border-right:1px solid #d8dde6; padding: 0 12px;">
+                            <p class="text-muted slds-text-title_caps" style="font-size:10px;">Total Characters</p>
+                            <p class="badge-metric" id="totalCharCount">0</p>
+                            <p class="text-muted" style="font-size:10px;">of 160</p>
+                        </div>
+
                         <div class="slds-col slds-text-align_center">
-                            <p class="text-muted slds-text-title_caps">SMS Segments</p>
+                            <p class="text-muted slds-text-title_caps" style="font-size:10px;">SMS Segments</p>
                             <p class="badge-metric" id="smsSegments">1</p>
+                            <p class="text-muted" style="font-size:10px;">message(s)</p>
                         </div>
+
                     </div>
+
+                    <!-- Warning / Status line -->
                     <div class="slds-m-top_small slds-text-align_center">
-                        <span class="slds-text-body_small text-muted" id="alertWarning">
-                            Fits comfortably in 1 standard SMS.
+                        <span class="slds-text-body_small" id="alertWarning" style="color: #2e844a;">
+                            ✅ Fits comfortably in 1 standard SMS.
                         </span>
                     </div>
                 </div>
 
                 <!-- Live Preview Block -->
-                <p class="slds-text-title_caps slds-m-bottom_xx-small text-muted">Outbound SMS Preview</p>
-                <div class="preview-box" id="previewText">PSM Alert: [Type your message above] Reply HELP for help, STOP to end. Msg frq varies. Msg&Data Rates May Apply. Questions? Call us at 1-800-998-7715</div>
+                <div class="slds-grid slds-grid_align-spread slds-m-bottom_xx-small">
+                    <p class="slds-text-title_caps text-muted">Outbound SMS Preview</p>
+                    <span id="segmentBadge" class="link-status-badge link-status-active" style="font-size:10px;">1 Segment</span>
+                </div>
+                <div class="preview-box" id="previewText">PSM Alert: [Type your message above] Reply HELP for help, STOP to end. Msg frq varies. Msg&amp;Data Rates May Apply. Questions? Call us at 1-800-998-7715</div>
+
+                <!-- Personalization Tip -->
                 <div class="slds-m-top_x-small">
-                    <p class="slds-text-body_small text-muted" style="line-height: 1.3;">
-                        💡 <strong>Note:</strong> Personalization tags like <code>{{Contact.Attribute.Name}}</code> are counted literally above, but will dynamically adjust to individual recipient name lengths at runtime.
+                    <p class="slds-text-body_small text-muted" style="line-height: 1.4;">
+                        💡 <strong>Personalization Note:</strong> Tags like <code>{{Contact.Attribute.Name}}</code> are counted as-is above, but will resolve to real values at runtime. Character count may vary per contact.
                     </p>
                 </div>
+
             </div>
         </div>
     </div>
